@@ -246,12 +246,12 @@ video { width: 100%; border-radius: var(--radius); border: 1px solid var(--borde
     <h1>فایل PowerPoint خود را آپلود کنید</h1>
     <p class="sub">هر اسلاید به یک صفحه ویدیو با صدای AI تبدیل می‌شود</p>
 
-    <div class="upload-area" id="uploadArea">
+    <label for="fileInput" class="upload-area" id="uploadArea">
       <div class="upload-icon">📂</div>
       <p>فایل PPTX را اینجا بکشید یا کلیک کنید</p>
       <span class="upload-hint">فقط فرمت .pptx پشتیبانی می‌شود</span>
-      <input type="file" id="fileInput" accept=".pptx" hidden />
-    </div>
+      <input type="file" id="fileInput" accept=".pptx" style="display:none" />
+    </label>
 
     <div class="settings">
       <div class="setting-group">
@@ -347,7 +347,7 @@ let ffmpeg = null;
 let videoBlob = null;
 
 // ─── آپلود ───
-uploadArea.addEventListener('click', () => fileInput.click());
+// click handled by label
 
 uploadArea.addEventListener('dragover', e => {
   e.preventDefault();
