@@ -190,7 +190,7 @@ startBtn.addEventListener('click', async () => {
   if (!selectedFile) return;
   const language = document.getElementById('language').value;
   const style = document.getElementById('style').value;
-  const duration = parseInt(document.getElementById('duration').value);
+  const duration = 60;
 
   showStep('step-processing');
   setProgress(0, 'خواندن فایل PPTX...');
