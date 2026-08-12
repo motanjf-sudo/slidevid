@@ -9,250 +9,71 @@
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet" />
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --bg: #0f1117;
-  --surface: #1a1d27;
-  --surface2: #222636;
-  --border: #2e3248;
-  --accent: #6c63ff;
-  --accent-light: #8b85ff;
-  --text: #e8e9f0;
-  --muted: #8b8fa8;
-  --success: #4caf88;
-  --error: #e05c5c;
-  --radius: 12px;
+  --bg: #0f1117; --surface: #1a1d27; --surface2: #222636;
+  --border: #2e3248; --accent: #6c63ff; --accent-light: #8b85ff;
+  --text: #e8e9f0; --muted: #8b8fa8; --success: #4caf88;
+  --error: #e05c5c; --radius: 12px;
 }
-
-body {
-  font-family: 'Vazirmatn', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 20px 32px;
-  border-bottom: 1px solid var(--border);
-}
-
-.logo {
-  font-size: 20px;
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--accent), var(--accent-light));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.tagline {
-  font-size: 13px;
-  color: var(--muted);
-  background: var(--surface);
-  padding: 3px 10px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-}
-
-main {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-}
-
-.step {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  max-width: 640px;
-  gap: 24px;
-}
+body { font-family: 'Vazirmatn', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+header { display: flex; align-items: center; gap: 12px; padding: 20px 32px; border-bottom: 1px solid var(--border); }
+.logo { font-size: 20px; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--accent-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.tagline { font-size: 13px; color: var(--muted); background: var(--surface); padding: 3px 10px; border-radius: 20px; border: 1px solid var(--border); }
+main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+.step { display: none; flex-direction: column; align-items: center; text-align: center; width: 100%; max-width: 640px; gap: 24px; }
 .step.active { display: flex; }
-
 h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
 .sub { color: var(--muted); font-size: 15px; line-height: 1.6; }
-
-.upload-area {
-  width: 100%;
-  border: 2px dashed var(--border);
-  border-radius: var(--radius);
-  padding: 48px 24px;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: var(--surface);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-.upload-area:hover, .upload-area.drag-over {
-  border-color: var(--accent);
-  background: rgba(108,99,255,0.06);
-}
-.upload-area.has-file {
-  border-style: solid;
-  border-color: var(--success);
-  background: rgba(76,175,136,0.06);
-}
+.upload-area { width: 100%; border: 2px dashed var(--border); border-radius: var(--radius); padding: 48px 24px; cursor: pointer; transition: all 0.2s; background: var(--surface); display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.upload-area:hover { border-color: var(--accent); background: rgba(108,99,255,0.06); }
+.upload-area.has-file { border-style: solid; border-color: var(--success); background: rgba(76,175,136,0.06); }
 .upload-icon { font-size: 40px; }
 .upload-area p { font-size: 15px; font-weight: 500; }
 .upload-hint { font-size: 12px; color: var(--muted); }
-
-.settings {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
+.settings { width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .setting-group { display: flex; flex-direction: column; gap: 6px; text-align: right; }
 .setting-group label { font-size: 12px; color: var(--muted); font-weight: 500; }
-
-select {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text);
-  padding: 8px 12px;
-  font-family: 'Vazirmatn', sans-serif;
-  font-size: 13px;
-  cursor: pointer;
-  transition: border-color 0.2s;
-}
-select:focus { outline: none; border-color: var(--accent); }
-
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  padding: 14px 40px;
-  font-family: 'Vazirmatn', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  width: 100%;
-}
-.btn-primary:hover:not(:disabled) { background: var(--accent-light); transform: translateY(-1px); }
+select { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 8px 12px; font-family: 'Vazirmatn', sans-serif; font-size: 13px; cursor: pointer; }
+.btn-primary { background: var(--accent); color: #fff; border: none; border-radius: var(--radius); padding: 14px 40px; font-family: 'Vazirmatn', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; width: 100%; }
+.btn-primary:hover:not(:disabled) { background: var(--accent-light); }
 .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.btn-secondary {
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 12px 32px;
-  font-family: 'Vazirmatn', sans-serif;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  width: 100%;
-}
-.btn-secondary:hover { border-color: var(--muted); color: var(--text); }
-
-.slides-grid {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 12px;
-}
-
-.slide-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow: hidden;
-  position: relative;
-}
+.btn-secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 32px; font-family: 'Vazirmatn', sans-serif; font-size: 14px; cursor: pointer; width: 100%; }
+.slides-grid { width: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+.slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; position: relative; }
 .slide-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
-.slide-card .slide-status {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: 6px 8px;
-  font-size: 11px;
-  font-weight: 500;
-  text-align: center;
-}
-.slide-card.waiting .slide-status   { background: rgba(0,0,0,0.6); color: var(--muted); }
+.slide-card .slide-status { position: absolute; bottom: 0; left: 0; right: 0; padding: 6px 8px; font-size: 11px; font-weight: 500; text-align: center; }
+.slide-card.waiting .slide-status { background: rgba(0,0,0,0.6); color: var(--muted); }
 .slide-card.processing .slide-status { background: rgba(108,99,255,0.8); color: #fff; }
-.slide-card.done .slide-status      { background: rgba(76,175,136,0.8); color: #fff; }
-.slide-card.error .slide-status     { background: rgba(224,92,92,0.8); color: #fff; }
-.slide-number {
-  position: absolute;
-  top: 6px; right: 6px;
-  background: rgba(0,0,0,0.6);
-  color: #fff;
-  font-size: 11px;
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
+.slide-card.done .slide-status { background: rgba(76,175,136,0.8); color: #fff; }
+.slide-card.error .slide-status { background: rgba(224,92,92,0.8); color: #fff; }
+.slide-number { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.6); color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 4px; }
 .overall-progress { width: 100%; display: flex; flex-direction: column; gap: 8px; }
 .progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
 .progress-bar { width: 100%; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-light));
-  border-radius: 3px;
-  transition: width 0.4s ease;
-  width: 0%;
-}
-
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-light)); border-radius: 3px; transition: width 0.4s ease; width: 0%; }
 .done-icon { font-size: 56px; }
 video { width: 100%; border-radius: var(--radius); border: 1px solid var(--border); background: #000; }
-
-.toast {
-  position: fixed;
-  bottom: 24px; left: 50%;
-  transform: translateX(-50%);
-  background: var(--error);
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: var(--radius);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
-  z-index: 999;
-}
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--error); color: #fff; padding: 12px 20px; border-radius: var(--radius); display: flex; align-items: center; gap: 12px; font-size: 14px; z-index: 999; min-width: 300px; }
 .toast.hidden { display: none; }
-.toast button { background: none; border: none; color: #fff; cursor: pointer; font-size: 16px; }
-
-@media (max-width: 480px) {
-  .settings { grid-template-columns: 1fr; }
-  h1 { font-size: 22px; }
-}
+.toast button { background: none; border: none; color: #fff; cursor: pointer; font-size: 16px; margin-right: auto; }
+@media (max-width: 480px) { .settings { grid-template-columns: 1fr; } h1 { font-size: 22px; } }
 </style>
 </head>
 <body>
-
 <header>
   <span class="logo">SlideVid</span>
   <span class="tagline">اسلاید → ویدیو</span>
 </header>
-
 <main>
-
-  <!-- مرحله ۱: آپلود -->
   <section id="step-upload" class="step active">
     <h1>فایل PowerPoint خود را آپلود کنید</h1>
     <p class="sub">هر اسلاید به یک صفحه ویدیو با صدای AI تبدیل می‌شود</p>
-
     <div class="upload-area" id="uploadArea">
       <div class="upload-icon">📂</div>
-      <p>فایل PPTX را اینجا بکشید یا کلیک کنید</p>
-      <span class="upload-hint">فقط فرمت .pptx پشتیبانی می‌شود</span>
-      <input type="file" id="fileInput" accept=".pptx" style="display:none" />
+      <p id="uploadText">فایل PPTX را اینجا بکشید یا کلیک کنید</p>
+      <span class="upload-hint" id="uploadHint">فقط فرمت .pptx پشتیبانی می‌شود</span>
     </div>
-
+    <input type="file" id="fileInput" accept=".pptx" style="display:none" />
     <div class="settings">
       <div class="setting-group">
         <label>زبان صدا</label>
@@ -279,11 +100,9 @@ video { width: 100%; border-radius: var(--radius); border: 1px solid var(--borde
         </select>
       </div>
     </div>
-
     <button class="btn-primary" id="startBtn" disabled>شروع تبدیل</button>
   </section>
 
-  <!-- مرحله ۲: پردازش -->
   <section id="step-processing" class="step">
     <h1>در حال پردازش...</h1>
     <div class="slides-grid" id="slidesGrid"></div>
@@ -292,13 +111,10 @@ video { width: 100%; border-radius: var(--radius); border: 1px solid var(--borde
         <span id="progressText">آماده‌سازی...</span>
         <span id="progressPercent">0%</span>
       </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
   </section>
 
-  <!-- مرحله ۳: دانلود -->
   <section id="step-done" class="step">
     <div class="done-icon">✅</div>
     <h1>ویدیو آماده است!</h1>
@@ -307,7 +123,6 @@ video { width: 100%; border-radius: var(--radius); border: 1px solid var(--borde
     <button class="btn-primary" id="downloadBtn">دانلود ویدیو MP4</button>
     <button class="btn-secondary" id="restartBtn">تبدیل فایل جدید</button>
   </section>
-
 </main>
 
 <div id="errorToast" class="toast hidden">
@@ -316,28 +131,24 @@ video { width: 100%; border-radius: var(--radius); border: 1px solid var(--borde
 </div>
 
 <script type="module">
-import { convertPptxToPng, initResvgWasm } from 'https://esm.sh/pptx-glimpse@latest';
 import { FFmpeg } from 'https://esm.sh/@ffmpeg/ffmpeg@0.12.10';
 import { toBlobURL } from 'https://esm.sh/@ffmpeg/util@0.12.1';
 
-// ─── آدرس Cloudflare Worker ───
 const WORKER_URL = 'https://slidevid-api.motanjf.workers.dev';
 
-
-// ─── المان‌ها ───
-const uploadArea    = document.getElementById('uploadArea');
-const fileInput     = document.getElementById('fileInput');
-const startBtn      = document.getElementById('startBtn');
-const slidesGrid    = document.getElementById('slidesGrid');
-const progressFill  = document.getElementById('progressFill');
-const progressText  = document.getElementById('progressText');
-const progressPct   = document.getElementById('progressPercent');
-const videoPreview  = document.getElementById('videoPreview');
-const videoInfo     = document.getElementById('videoInfo');
-const downloadBtn   = document.getElementById('downloadBtn');
-const restartBtn    = document.getElementById('restartBtn');
-const errorToast    = document.getElementById('errorToast');
-const errorMsg      = document.getElementById('errorMsg');
+const uploadArea   = document.getElementById('uploadArea');
+const fileInput    = document.getElementById('fileInput');
+const startBtn     = document.getElementById('startBtn');
+const slidesGrid   = document.getElementById('slidesGrid');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const progressPct  = document.getElementById('progressPercent');
+const videoPreview = document.getElementById('videoPreview');
+const videoInfo    = document.getElementById('videoInfo');
+const downloadBtn  = document.getElementById('downloadBtn');
+const restartBtn   = document.getElementById('restartBtn');
+const errorToast   = document.getElementById('errorToast');
+const errorMsg     = document.getElementById('errorMsg');
 
 let selectedFile = null;
 let ffmpeg = null;
@@ -346,29 +157,27 @@ let videoBlob = null;
 // ─── آپلود ───
 uploadArea.addEventListener('click', () => fileInput.click());
 
-uploadArea.addEventListener('dragover', e => {
-  e.preventDefault();
-  uploadArea.classList.add('drag-over');
-});
-uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.style.borderColor = 'var(--accent)'; });
+uploadArea.addEventListener('dragleave', () => { uploadArea.style.borderColor = ''; });
 uploadArea.addEventListener('drop', e => {
   e.preventDefault();
-  uploadArea.classList.remove('drag-over');
+  uploadArea.style.borderColor = '';
   if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
 });
+
 fileInput.addEventListener('change', () => {
   if (fileInput.files[0]) handleFile(fileInput.files[0]);
 });
 
 function handleFile(file) {
-  if (!file.name.endsWith('.pptx')) {
+  if (!file.name.toLowerCase().endsWith('.pptx')) {
     showError('فقط فایل .pptx پشتیبانی می‌شود');
     return;
   }
   selectedFile = file;
   uploadArea.classList.add('has-file');
-  uploadArea.querySelector('p').textContent = `✓ ${file.name}`;
-  uploadArea.querySelector('.upload-hint').textContent = `${(file.size/1024/1024).toFixed(1)} MB`;
+  document.getElementById('uploadText').textContent = '✓ ' + file.name;
+  document.getElementById('uploadHint').textContent = (file.size/1024/1024).toFixed(1) + ' MB';
   startBtn.disabled = false;
 }
 
@@ -384,33 +193,34 @@ startBtn.addEventListener('click', async () => {
   setProgress(0, 'خواندن فایل PPTX...');
 
   try {
-    // initialize resvg WASM
-    try { const w = await fetch('https://esm.sh/resvg-wasm@0.10.0/resvg.wasm'); await initResvgWasm(w); } catch(e) {}
-
-    // مرحله ۱: تبدیل اسلایدها به PNG در مرورگر
+    // مرحله ۱: تبدیل PPTX به PNG
+    setProgress(5, 'در حال تبدیل اسلایدها...');
     const pptxBuffer = await selectedFile.arrayBuffer();
-    const { slides } = await convertPptxToPng(new Uint8Array(pptxBuffer));
 
+    // dynamic import و initialize resvg
+    const { convertPptxToPng, initResvgWasm } = await import('https://esm.sh/pptx-glimpse@latest');
+    const wasmRes = await fetch('https://esm.sh/resvg-wasm@0.10.0/resvg.wasm');
+    await initResvgWasm(wasmRes);
+
+    const { slides } = await convertPptxToPng(new Uint8Array(pptxBuffer));
     if (!slides?.length) throw new Error('اسلایدی در فایل یافت نشد');
 
     renderSlideCards(slides);
-    setProgress(15, `${slides.length} اسلاید پیدا شد`);
+    setProgress(15, slides.length + ' اسلاید پیدا شد');
 
-    // مرحله ۲: بارگذاری FFmpeg در مرورگر
+    // مرحله ۲: بارگذاری FFmpeg
     setProgress(20, 'آماده‌سازی موتور ویدیو...');
     await loadFFmpeg();
 
     // مرحله ۳: پردازش هر اسلاید
     for (let i = 0; i < slides.length; i++) {
       updateSlideCard(i, 'processing', 'در حال پردازش...');
-      setProgress(25 + Math.round((i / slides.length) * 55), `اسلاید ${i+1} از ${slides.length}`);
+      setProgress(25 + Math.round((i / slides.length) * 55), 'اسلاید ' + (i+1) + ' از ' + slides.length);
 
-      // ذخیره عکس در ffmpeg
-      ffmpeg.writeFile(`slide_${i}.png`, slides[i].png);
+      ffmpeg.writeFile('slide_' + i + '.png', slides[i].png);
 
-      // دریافت صدا از Worker
       const audio = await getAudio(slides[i].png, i, language, style, duration);
-      ffmpeg.writeFile(`audio_${i}.mp3`, audio);
+      ffmpeg.writeFile('audio_' + i + '.mp3', audio);
 
       updateSlideCard(i, 'done', '✓ آماده');
     }
@@ -419,11 +229,10 @@ startBtn.addEventListener('click', async () => {
     setProgress(82, 'در حال ساخت ویدیو...');
     await buildVideo(slides.length);
 
-    // نمایش نتیجه
     const data = ffmpeg.readFile('output.mp4');
     videoBlob = new Blob([data.buffer], { type: 'video/mp4' });
     videoPreview.src = URL.createObjectURL(videoBlob);
-    videoInfo.textContent = `${slides.length} اسلاید · ${(videoBlob.size/1024/1024).toFixed(1)} MB`;
+    videoInfo.textContent = slides.length + ' اسلاید · ' + (videoBlob.size/1024/1024).toFixed(1) + ' MB';
 
     setProgress(100, 'تمام شد!');
     showStep('step-done');
@@ -435,123 +244,88 @@ startBtn.addEventListener('click', async () => {
   }
 });
 
-// ─── دریافت صدا از Worker ───
 async function getAudio(pngBytes, index, language, style, duration) {
   const base64 = btoa(String.fromCharCode(...pngBytes));
-
-  const res = await fetch(`${WORKER_URL}/generate`, {
+  const res = await fetch(WORKER_URL + '/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ slideIndex: index, imageBase64: base64, language, style, duration })
   });
-
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.error || `خطا در پردازش اسلاید ${index+1}`);
+    throw new Error(err.error || 'خطا در پردازش اسلاید ' + (index+1));
   }
-
   return new Uint8Array(await res.arrayBuffer());
 }
 
-// ─── بارگذاری FFmpeg ───
 async function loadFFmpeg() {
   if (ffmpeg) return;
   ffmpeg = new FFmpeg();
   const base = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
   await ffmpeg.load({
-    coreURL: await toBlobURL(`${base}/ffmpeg-core.js`, 'text/javascript'),
-    wasmURL: await toBlobURL(`${base}/ffmpeg-core.wasm`, 'application/wasm'),
+    coreURL: await toBlobURL(base + '/ffmpeg-core.js', 'text/javascript'),
+    wasmURL: await toBlobURL(base + '/ffmpeg-core.wasm', 'application/wasm'),
   });
 }
 
-// ─── ساخت ویدیو ───
 async function buildVideo(count) {
-  // ساخت ویدیو برای هر اسلاید
   for (let i = 0; i < count; i++) {
     await ffmpeg.exec([
-      '-loop', '1', '-i', `slide_${i}.png`,
-      '-i', `audio_${i}.mp3`,
+      '-loop', '1', '-i', 'slide_' + i + '.png',
+      '-i', 'audio_' + i + '.mp3',
       '-c:v', 'libx264', '-tune', 'stillimage',
       '-c:a', 'aac', '-b:a', '128k',
       '-pix_fmt', 'yuv420p', '-shortest',
       '-vf', 'scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2',
-      `slide_${i}.mp4`
+      'slide_' + i + '.mp4'
     ]);
   }
-
-  // فایل concat
   let concat = '';
-  for (let i = 0; i < count; i++) concat += `file 'slide_${i}.mp4'\n`;
+  for (let i = 0; i < count; i++) concat += "file 'slide_" + i + ".mp4'\n";
   ffmpeg.writeFile('concat.txt', concat);
-
-  // ترکیب همه
-  await ffmpeg.exec([
-    '-f', 'concat', '-safe', '0',
-    '-i', 'concat.txt',
-    '-c', 'copy', 'output.mp4'
-  ]);
+  await ffmpeg.exec(['-f', 'concat', '-safe', '0', '-i', 'concat.txt', '-c', 'copy', 'output.mp4']);
 }
 
-// ─── رندر کارت‌ها ───
 function renderSlideCards(slides) {
   slidesGrid.innerHTML = '';
   slides.forEach((slide, i) => {
     const url = URL.createObjectURL(new Blob([slide.png], { type: 'image/png' }));
     const card = document.createElement('div');
     card.className = 'slide-card waiting';
-    card.id = `card-${i}`;
-    card.innerHTML = `
-      <img src="${url}" alt="اسلاید ${i+1}" />
-      <div class="slide-number">${i+1}</div>
-      <div class="slide-status">در انتظار</div>
-    `;
+    card.id = 'card-' + i;
+    card.innerHTML = '<img src="' + url + '" alt="اسلاید ' + (i+1) + '" /><div class="slide-number">' + (i+1) + '</div><div class="slide-status">در انتظار</div>';
     slidesGrid.appendChild(card);
   });
 }
 
 function updateSlideCard(i, status, text) {
-  const card = document.getElementById(`card-${i}`);
+  const card = document.getElementById('card-' + i);
   if (!card) return;
-  card.className = `slide-card ${status}`;
+  card.className = 'slide-card ' + status;
   card.querySelector('.slide-status').textContent = text;
 }
 
-// ─── دانلود ───
 downloadBtn.addEventListener('click', () => {
   if (!videoBlob) return;
   const a = document.createElement('a');
   a.href = URL.createObjectURL(videoBlob);
-  a.download = `slidevid-${Date.now()}.mp4`;
+  a.download = 'slidevid-' + Date.now() + '.mp4';
   a.click();
 });
 
-// ─── شروع مجدد ───
 restartBtn.addEventListener('click', () => {
-  selectedFile = null;
-  videoBlob = null;
-  fileInput.value = '';
+  selectedFile = null; videoBlob = null; fileInput.value = '';
   uploadArea.classList.remove('has-file');
-  uploadArea.querySelector('p').textContent = 'فایل PPTX را اینجا بکشید یا کلیک کنید';
-  uploadArea.querySelector('.upload-hint').textContent = 'فقط فرمت .pptx پشتیبانی می‌شود';
+  document.getElementById('uploadText').textContent = 'فایل PPTX را اینجا بکشید یا کلیک کنید';
+  document.getElementById('uploadHint').textContent = 'فقط فرمت .pptx پشتیبانی می‌شود';
   startBtn.disabled = true;
   slidesGrid.innerHTML = '';
   showStep('step-upload');
 });
 
-// ─── توابع کمکی ───
-function showStep(id) {
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-function setProgress(pct, text) {
-  progressFill.style.width = pct + '%';
-  progressText.textContent = text;
-  progressPct.textContent = pct + '%';
-}
-function showError(msg) {
-  errorMsg.textContent = msg;
-  errorToast.classList.remove('hidden');
-}
+function showStep(id) { document.querySelectorAll('.step').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+function setProgress(pct, text) { progressFill.style.width = pct + '%'; progressText.textContent = text; progressPct.textContent = pct + '%'; }
+function showError(msg) { errorMsg.textContent = msg; errorToast.classList.remove('hidden'); }
 </script>
 </body>
 </html>
