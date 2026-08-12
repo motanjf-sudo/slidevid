@@ -250,7 +250,7 @@ video { width: 100%; border-radius: var(--radius); border: 1px solid var(--borde
       <div class="upload-icon">📂</div>
       <p>فایل PPTX را اینجا بکشید یا کلیک کنید</p>
       <span class="upload-hint">فقط فرمت .pptx پشتیبانی می‌شود</span>
-      <input type="file" id="fileInput" accept=".pptx" style="position:absolute;opacity:0;pointer-events:none" />
+      <input type="file" id="fileInput" accept=".pptx" style="display:none" />
     </div>
 
     <div class="settings">
@@ -323,9 +323,6 @@ import { toBlobURL } from 'https://esm.sh/@ffmpeg/util@0.12.1';
 // ─── آدرس Cloudflare Worker ───
 const WORKER_URL = 'https://slidevid-api.motanjf.workers.dev';
 
-// ─── initialize resvg WASM ───
-const resvgWasm = await fetch('https://esm.sh/resvg-wasm@0.10.0/resvg.wasm');
-await initResvgWasm(resvgWasm);
 
 // ─── المان‌ها ───
 const uploadArea    = document.getElementById('uploadArea');
@@ -387,6 +384,9 @@ startBtn.addEventListener('click', async () => {
   setProgress(0, 'خواندن فایل PPTX...');
 
   try {
+    // initialize resvg WASM
+    try { const w = await fetch('https://esm.sh/resvg-wasm@0.10.0/resvg.wasm'); await initResvgWasm(w); } catch(e) {}
+
     // مرحله ۱: تبدیل اسلایدها به PNG در مرورگر
     const pptxBuffer = await selectedFile.arrayBuffer();
     const { slides } = await convertPptxToPng(new Uint8Array(pptxBuffer));
