@@ -36,9 +36,10 @@ select { background: var(--surface); border: 1px solid var(--border); border-rad
 .btn-primary:hover:not(:disabled) { background: var(--accent-light); }
 .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn-secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 32px; font-family: 'Vazirmatn', sans-serif; font-size: 14px; cursor: pointer; width: 100%; margin-top: 8px; }
+.btn-download { background: var(--success); color: #fff; border: none; border-radius: var(--radius); padding: 12px 32px; font-family: 'Vazirmatn', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 8px; }
 .slides-grid { width: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
 .slide-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; position: relative; }
-.slide-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+.slide-card img, .slide-card svg { width: 100%; aspect-ratio: 16/9; object-fit: contain; display: block; background: white; }
 .slide-card .slide-status { position: absolute; bottom: 0; left: 0; right: 0; padding: 6px 8px; font-size: 11px; font-weight: 500; text-align: center; }
 .slide-card.waiting .slide-status { background: rgba(0,0,0,0.6); color: var(--muted); }
 .slide-card.processing .slide-status { background: rgba(108,99,255,0.8); color: #fff; }
@@ -50,13 +51,11 @@ select { background: var(--surface); border: 1px solid var(--border); border-rad
 .progress-bar { width: 100%; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
 .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-light)); border-radius: 3px; transition: width 0.4s ease; width: 0%; }
 .done-icon { font-size: 56px; }
-
-/* پرزنتیشن */
 .presentation { width: 100%; background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
-.slide-viewer { position: relative; }
-.slide-viewer img { width: 100%; display: block; }
-.slide-caption { padding: 16px 20px; font-size: 14px; line-height: 1.8; color: var(--text); text-align: right; border-top: 1px solid var(--border); max-height: 150px; overflow-y: auto; }
-.slide-controls { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-top: 1px solid var(--border); gap: 12px; }
+.slide-viewer { position: relative; background: white; }
+.slide-viewer img, .slide-viewer svg { width: 100%; display: block; }
+.slide-caption { padding: 16px 20px; font-size: 14px; line-height: 1.8; color: var(--text); text-align: right; border-top: 1px solid var(--border); max-height: 120px; overflow-y: auto; }
+.slide-controls { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-top: 1px solid var(--border); gap: 12px; flex-wrap: wrap; }
 .slide-nav { display: flex; gap: 8px; }
 .nav-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: 'Vazirmatn', sans-serif; font-size: 13px; }
 .nav-btn:hover:not(:disabled) { border-color: var(--accent); }
@@ -64,8 +63,7 @@ select { background: var(--surface); border: 1px solid var(--border); border-rad
 .slide-counter { font-size: 13px; color: var(--muted); }
 .play-btn { background: var(--accent); border: none; color: #fff; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-family: 'Vazirmatn', sans-serif; font-size: 13px; font-weight: 600; }
 .play-btn:hover { background: var(--accent-light); }
-
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--error); color: #fff; padding: 12px 20px; border-radius: var(--radius); display: flex; align-items: center; gap: 12px; font-size: 14px; z-index: 999; }
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--error); color: #fff; padding: 12px 20px; border-radius: var(--radius); display: flex; align-items: center; gap: 12px; font-size: 14px; z-index: 999; min-width: 300px; }
 .toast.hidden { display: none; }
 .toast button { background: none; border: none; color: #fff; cursor: pointer; font-size: 16px; }
 @media (max-width: 480px) { .settings { grid-template-columns: 1fr; } h1 { font-size: 22px; } }
@@ -123,9 +121,7 @@ select { background: var(--surface); border: 1px solid var(--border); border-rad
     <h1>پرزنتیشن آماده است!</h1>
     <p class="sub" id="slideInfo"></p>
     <div class="presentation">
-      <div class="slide-viewer">
-        <img id="slideImage" src="" alt="اسلاید" />
-      </div>
+      <div class="slide-viewer" id="slideViewer"></div>
       <div class="slide-caption" id="slideCaption"></div>
       <div class="slide-controls">
         <div class="slide-nav">
@@ -136,6 +132,7 @@ select { background: var(--surface); border: 1px solid var(--border); border-rad
         <button class="play-btn" id="playBtn">▶ پخش صدا</button>
       </div>
     </div>
+    <button class="btn-download" id="downloadBtn">⬇ دانلود ویدیو MP4</button>
     <button class="btn-secondary" id="restartBtn">پردازش فایل جدید</button>
   </section>
 </main>
@@ -146,8 +143,6 @@ select { background: var(--surface); border: 1px solid var(--border); border-rad
 </div>
 
 <script type="module">
-import { convertPptxToPng, initResvgWasm } from 'https://esm.sh/pptx-glimpse@latest';
-
 const WORKER_URL = 'https://slidevid-api.motanjf.workers.dev';
 
 const uploadArea = document.getElementById('uploadArea');
@@ -157,17 +152,18 @@ const slidesGrid = document.getElementById('slidesGrid');
 const progressFill = document.getElementById('progressFill');
 const progressText = document.getElementById('progressText');
 const progressPct = document.getElementById('progressPercent');
-const slideImage = document.getElementById('slideImage');
+const slideViewer = document.getElementById('slideViewer');
 const slideCaption = document.getElementById('slideCaption');
 const slideCounter = document.getElementById('slideCounter');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const playBtn = document.getElementById('playBtn');
 const slideInfo = document.getElementById('slideInfo');
+const downloadBtn = document.getElementById('downloadBtn');
 const restartBtn = document.getElementById('restartBtn');
 
 let selectedFile = null;
-let allSlides = []; // [{png, script, audioUrl}]
+let allSlides = [];
 let currentIndex = 0;
 let currentAudio = null;
 
@@ -190,47 +186,55 @@ startBtn.addEventListener('click', async () => {
   if (!selectedFile) return;
   const language = document.getElementById('language').value;
   const style = document.getElementById('style').value;
-  const duration = 60;
 
   showStep('step-processing');
   setProgress(0, 'خواندن فایل PPTX...');
 
   try {
-    // تبدیل PPTX به PNG
     setProgress(5, 'تبدیل اسلایدها به تصویر...');
     const pptxBuffer = await selectedFile.arrayBuffer();
-    const { convertPptxToPng: cvt, initResvgWasm: init } = await import('https://esm.sh/pptx-glimpse@latest');
-    const wasmRes = await fetch('https://unpkg.com/@resvg/resvg-wasm@2.6.2/index_bg.wasm');
-    await init(wasmRes);
-    const { slides } = await cvt(new Uint8Array(pptxBuffer));
+
+    const { convertPptxToSvg } = await import('https://esm.sh/pptx-glimpse@latest');
+    const { slides } = await convertPptxToSvg(new Uint8Array(pptxBuffer));
     if (!slides?.length) throw new Error('اسلایدی پیدا نشد');
 
     renderSlideCards(slides);
     setProgress(15, slides.length + ' اسلاید پیدا شد');
-    allSlides = slides.map(s => ({ png: s.png, script: '', audioUrl: '' }));
+    allSlides = slides.map(s => ({ svg: s.svg, script: '', audioBlob: null }));
 
-    // پردازش هر اسلاید
     for (let i = 0; i < slides.length; i++) {
       updateSlideCard(i, 'processing', 'پردازش...');
       setProgress(20 + Math.round((i / slides.length) * 75), 'اسلاید ' + (i+1) + ' از ' + slides.length);
 
-      const base64 = btoa(String.fromCharCode(...slides[i].png));
+      // تبدیل SVG به PNG برای ارسال به API
+      const svgBlob = new Blob([slides[i].svg], {type: 'image/svg+xml'});
+      const img = new Image();
+      const svgUrl = URL.createObjectURL(svgBlob);
+      await new Promise(resolve => { img.onload = resolve; img.src = svgUrl; });
+      const canvas = document.createElement('canvas');
+      canvas.width = 1280; canvas.height = 720;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, 1280, 720);
+      ctx.drawImage(img, 0, 0, 1280, 720);
+      URL.revokeObjectURL(svgUrl);
+      const base64 = canvas.toDataURL('image/png').split(',')[1];
+
       const res = await fetch(WORKER_URL + '/generate', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ slideIndex: i, imageBase64: base64, language, style, duration })
+        body: JSON.stringify({ slideIndex: i, imageBase64: base64, language, style, duration: 60 })
       });
 
       if (!res.ok) { const e = await res.json(); throw new Error(e.error || 'خطا'); }
 
-      const audioBlob = new Blob([await res.arrayBuffer()], {type: 'audio/wav'});
-      allSlides[i].audioUrl = URL.createObjectURL(audioBlob);
+      allSlides[i].audioBlob = new Blob([await res.arrayBuffer()], {type: 'audio/wav'});
 
-      // گرفتن متن هم
+      // گرفتن متن
       const res2 = await fetch(WORKER_URL + '/script', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ slideIndex: i, imageBase64: base64, language, style, duration })
+        body: JSON.stringify({ slideIndex: i, imageBase64: base64, language, style, duration: 60 })
       });
       if (res2.ok) { const d = await res2.json(); allSlides[i].script = d.script || ''; }
 
@@ -254,8 +258,9 @@ function showSlide(i) {
   if (!allSlides[i]) return;
   currentIndex = i;
   const slide = allSlides[i];
-  const imgUrl = URL.createObjectURL(new Blob([slide.png], {type: 'image/png'}));
-  slideImage.src = imgUrl;
+  slideViewer.innerHTML = slide.svg;
+  const svgEl = slideViewer.querySelector('svg');
+  if (svgEl) { svgEl.style.width = '100%'; svgEl.style.height = 'auto'; svgEl.style.display = 'block'; }
   slideCaption.textContent = slide.script || '';
   slideCounter.textContent = (i+1) + ' / ' + allSlides.length;
   prevBtn.disabled = i === 0;
@@ -269,17 +274,82 @@ nextBtn.addEventListener('click', () => showSlide(currentIndex + 1));
 
 playBtn.addEventListener('click', () => {
   const slide = allSlides[currentIndex];
-  if (!slide?.audioUrl) return;
+  if (!slide?.audioBlob) return;
   if (currentAudio && !currentAudio.paused) {
     currentAudio.pause();
     playBtn.textContent = '▶ پخش صدا';
     return;
   }
-  currentAudio = new Audio(slide.audioUrl);
+  currentAudio = new Audio(URL.createObjectURL(slide.audioBlob));
   currentAudio.play();
   playBtn.textContent = '⏸ توقف';
   currentAudio.onended = () => { playBtn.textContent = '▶ پخش صدا'; };
 });
+
+downloadBtn.addEventListener('click', async () => {
+  downloadBtn.textContent = '⏳ در حال ساخت ویدیو...';
+  downloadBtn.disabled = true;
+  try {
+    const videoBlob = await makeWebM();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(videoBlob);
+    a.download = 'slidevid_' + Date.now() + '.webm';
+    a.click();
+  } catch(e) {
+    showError('خطا: ' + e.message);
+  }
+  downloadBtn.textContent = '⬇ دانلود ویدیو';
+  downloadBtn.disabled = false;
+});
+
+async function makeWebM() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1280; canvas.height = 720;
+  const ctx = canvas.getContext('2d');
+
+  const chunks = [];
+  const audioCtx = new AudioContext();
+  const dest = audioCtx.createMediaStreamDestination();
+
+  const videoStream = canvas.captureStream(30);
+  const combined = new MediaStream([
+    ...videoStream.getVideoTracks(),
+    ...dest.stream.getAudioTracks()
+  ]);
+
+  const recorder = new MediaRecorder(combined, { mimeType: 'video/webm' });
+  recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+  recorder.start(100);
+
+  for (let i = 0; i < allSlides.length; i++) {
+    const slide = allSlides[i];
+
+    // رندر SVG
+    const svgBlob = new Blob([slide.svg], {type: 'image/svg+xml'});
+    const img = new Image();
+    await new Promise(resolve => { img.onload = resolve; img.src = URL.createObjectURL(svgBlob); });
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, 1280, 720);
+    ctx.drawImage(img, 0, 0, 1280, 720);
+
+    // پخش صدا
+    if (slide.audioBlob) {
+      const arrayBuf = await slide.audioBlob.arrayBuffer();
+      const audioBuf = await audioCtx.decodeAudioData(arrayBuf);
+      const source = audioCtx.createBufferSource();
+      source.buffer = audioBuf;
+      source.connect(dest);
+      source.start();
+      await new Promise(r => source.onended = r);
+    } else {
+      await new Promise(r => setTimeout(r, 2000));
+    }
+  }
+
+  recorder.stop();
+  await new Promise(r => recorder.onstop = r);
+  return new Blob(chunks, { type: 'video/webm' });
+}
 
 restartBtn.addEventListener('click', () => {
   selectedFile = null; allSlides = []; currentIndex = 0;
@@ -296,11 +366,17 @@ restartBtn.addEventListener('click', () => {
 function renderSlideCards(slides) {
   slidesGrid.innerHTML = '';
   slides.forEach((slide, i) => {
-    const url = URL.createObjectURL(new Blob([slide.png], {type: 'image/png'}));
     const card = document.createElement('div');
     card.className = 'slide-card waiting';
     card.id = 'card-' + i;
-    card.innerHTML = '<img src="' + url + '" /><div class="slide-number">' + (i+1) + '</div><div class="slide-status">در انتظار</div>';
+    const preview = document.createElement('div');
+    preview.style.cssText = 'width:100%;aspect-ratio:16/9;background:white;overflow:hidden;';
+    preview.innerHTML = slide.svg;
+    const svgEl = preview.querySelector('svg');
+    if (svgEl) { svgEl.style.width = '100%'; svgEl.style.height = '100%'; }
+    card.appendChild(preview);
+    card.innerHTML += '<div class="slide-number">' + (i+1) + '</div><div class="slide-status">در انتظار</div>';
+    card.insertBefore(preview, card.firstChild);
     slidesGrid.appendChild(card);
   });
 }
